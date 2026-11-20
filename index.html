@@ -1,0 +1,1016 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Muhammad Ali Al Faqih — Web Developer, Digital Designer & Information Systems Undergraduate at UNESA. Building web apps, data systems, and visual identities from Sidoarjo, Indonesia." />
+  <meta name="author" content="Muhammad Ali Al Faqih" />
+  <meta name="theme-color" content="#070708" />
+  <title>Muhammad Ali Al Faqih — Web Developer & Digital Creator</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="icon.png" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Space Grotesk"', 'sans-serif'],
+          },
+          colors: {
+            dark: '#070708',
+            surface: '#0F0F13',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      background-color: #070708;
+      color: #EDEDED;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ── Architectural Grid ── */
+    .bg-grid {
+      background-size: 48px 48px;
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.025) 1px, transparent 1px);
+    }
+
+    /* ── Custom Cursor ── */
+    #cursor-dot {
+      width: 8px; height: 8px;
+      background: #fff;
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: width 0.2s, height 0.2s, background 0.2s, opacity 0.2s;
+    }
+    #cursor-ring {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 9998;
+      transform: translate(-50%,-50%);
+      transition: all 0.12s ease, width 0.3s var(--ease-expo), height 0.3s var(--ease-expo);
+    }
+    body:has(a:hover) #cursor-ring,
+    body:has(button:hover) #cursor-ring {
+      width: 56px; height: 56px;
+      border-color: rgba(255,255,255,0.7);
+      background: rgba(255,255,255,0.05);
+    }
+
+    /* ── Liquid Glass Card (Premium) ── */
+    .glass-card {
+      background: linear-gradient(145deg, rgba(255,255,255,0.045) 0%, rgba(255,255,255,0.01) 100%);
+      backdrop-filter: blur(24px) saturate(160%);
+      -webkit-backdrop-filter: blur(24px) saturate(160%);
+      border: 1px solid rgba(255,255,255,0.09);
+      box-shadow:
+        0 24px 48px -16px rgba(0,0,0,0.75),
+        inset 0 1px 0 rgba(255,255,255,0.14),
+        inset 0 -1px 0 rgba(0,0,0,0.3);
+      transition: all 0.4s var(--ease-expo);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Liquid shimmer layer on glass-card */
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 50%, rgba(255,255,255,0.02) 100%);
+      opacity: 0;
+      transition: opacity 0.4s var(--ease-expo);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .glass-card:hover::before { opacity: 1; }
+
+    .glass-card:hover {
+      border-color: rgba(255,255,255,0.18);
+      transform: translateY(-5px);
+      box-shadow:
+        0 32px 60px -12px rgba(0,0,0,0.9),
+        inset 0 1px 0 rgba(255,255,255,0.22),
+        inset 0 -1px 0 rgba(0,0,0,0.3);
+    }
+
+    /* ── Liquid Glass Ripple on Click ── */
+    .glass-card.ripple-active::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+      transform: scale(0);
+      animation: liquidRipple 0.65s var(--ease-expo) forwards;
+      pointer-events: none;
+      z-index: 10;
+    }
+    @keyframes liquidRipple {
+      to { transform: scale(4); opacity: 0; }
+    }
+
+    /* ── Glass Pill ── */
+    .glass-pill {
+      background: rgba(255,255,255,0.045);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+      transition: all 0.3s var(--ease-expo);
+    }
+    .glass-pill:hover {
+      background: rgba(255,255,255,0.09);
+      border-color: rgba(255,255,255,0.22);
+    }
+
+    /* ── Solid White Button ── */
+    .btn-white {
+      background: #FFFFFF;
+      color: #08080A;
+      box-shadow: 0 0 28px rgba(255,255,255,0.2);
+      transition: all 0.3s var(--ease-expo);
+    }
+    .btn-white:hover {
+      background: #E8E8E8;
+      transform: translateY(-2px);
+      box-shadow: 0 0 40px rgba(255,255,255,0.32);
+    }
+    .btn-white:active { transform: scale(0.97) translateY(0); }
+
+    /* ── Ambient Orbs ── */
+    @keyframes floatA { 0%,100%{ transform:translate(0,0) scale(1);} 50%{ transform:translate(30px,-25px) scale(1.06);} }
+    @keyframes floatB { 0%,100%{ transform:translate(0,0) scale(1);} 50%{ transform:translate(-25px,20px) scale(1.04);} }
+    @keyframes floatC { 0%,100%{ transform:translate(0,0) scale(1);} 50%{ transform:translate(15px,30px) scale(1.05);} }
+    .orb-a { animation: floatA 18s ease-in-out infinite; }
+    .orb-b { animation: floatB 22s ease-in-out infinite -8s; }
+    .orb-c { animation: floatC 26s ease-in-out infinite -14s; }
+
+    /* ── Scroll Reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.75s var(--ease-expo), transform 0.75s var(--ease-expo);
+      will-change: opacity, transform;
+    }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+    .reveal.delay-1 { transition-delay: 0.1s; }
+    .reveal.delay-2 { transition-delay: 0.2s; }
+    .reveal.delay-3 { transition-delay: 0.3s; }
+
+    /* ── Sliding Profession Words ── */
+    .slide-word {
+      display: none;
+      animation: slideIn 0.55s var(--ease-expo);
+    }
+    .slide-word.active { display: inline-block; }
+    @keyframes slideIn {
+      from { opacity:0; transform: translateY(12px); }
+      to { opacity:1; transform: translateY(0); }
+    }
+
+    /* ── Navbar Active Indicator ── */
+    .nav-link { position: relative; transition: color 0.25s; }
+    .nav-link::after {
+      content:''; position:absolute; bottom:-2px; left:0; width:0; height:1px;
+      background:#fff; transition: width 0.3s var(--ease-expo);
+    }
+    .nav-link:hover::after, .nav-link.active::after { width:100%; }
+
+    /* ── Modal ── */
+    #modal-overlay {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s var(--ease-expo);
+    }
+    #modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    #modal-box {
+      transform: translateY(20px) scale(0.96);
+      transition: transform 0.4s var(--ease-expo);
+    }
+    #modal-overlay.open #modal-box { transform: translateY(0) scale(1); }
+
+    /* ── Toast ── */
+    #toast {
+      transform: translateY(90px);
+      opacity: 0;
+      transition: all 0.35s var(--ease-expo);
+      pointer-events: none;
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ── Certificate embed ── */
+    .cert-embed-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: rgba(0,0,0,0.5);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .cert-embed-wrap iframe,
+    .cert-embed-wrap embed {
+      width: 100%; height: 100%;
+      border: none;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #070708; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.14); border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.28); }
+
+    /* ── Scroll Progress Bar ── */
+    #scroll-bar {
+      position: fixed; top: 0; left: 0; height: 2px;
+      background: rgba(255,255,255,0.7);
+      width: 0%;
+      z-index: 9999;
+      transition: width 0.1s linear;
+    }
+
+    /* ── Timeline dot ── */
+    .tl-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      border: 2px solid rgba(255,255,255,0.15);
+      flex-shrink: 0;
+      margin-top: 5px;
+      transition: background 0.3s;
+    }
+    .tl-item:hover .tl-dot { background: #fff; }
+  </style>
+</head>
+<body class="bg-grid antialiased selection:bg-white selection:text-black relative min-h-screen">
+
+  <!-- Scroll Progress -->
+  <div id="scroll-bar"></div>
+
+  <!-- Custom Cursor -->
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- Ambient Orbs -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+    <div class="orb-a absolute -top-32 -left-24 w-[500px] h-[500px] rounded-full bg-white/[0.03] blur-[140px]"></div>
+    <div class="orb-b absolute top-[45%] -right-32 w-[420px] h-[420px] rounded-full bg-neutral-400/[0.022] blur-[150px]"></div>
+    <div class="orb-c absolute bottom-10 left-[30%] w-[460px] h-[360px] rounded-full bg-white/[0.018] blur-[160px]"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       NAVBAR
+  ═══════════════════════════════════════════ -->
+  <header class="fixed top-5 inset-x-0 z-50 px-4 sm:px-6">
+    <div class="max-w-4xl mx-auto glass-card rounded-full px-5 sm:px-7 py-2.5 flex items-center justify-between">
+
+      <!-- Brand -->
+      <a href="#home" class="flex items-center gap-2.5 group">
+        <span class="w-7 h-7 rounded-full bg-white text-black font-extrabold text-xs flex items-center justify-center font-display shadow-md group-hover:scale-110 transition-transform duration-300">
+          AF
+        </span>
+        <span class="font-display font-bold text-sm tracking-tight text-white group-hover:text-neutral-300 transition">
+          ALFAQIH<span class="text-neutral-500 font-sans text-[10px]">®</span>
+        </span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-7 text-xs font-medium text-neutral-400">
+        <a href="#projects" class="nav-link hover:text-white">Projects</a>
+        <a href="#experience" class="nav-link hover:text-white">Experience</a>
+        <a href="#certificates" class="nav-link hover:text-white">Certificates</a>
+        <a href="#about" class="nav-link hover:text-white">About</a>
+      </nav>
+
+      <!-- CTA -->
+      <div class="flex items-center gap-2.5">
+        <a href="#contact" class="px-4 py-1.5 rounded-full btn-white text-xs font-bold tracking-wide hidden sm:flex">
+          Let's Talk ↗
+        </a>
+        <button id="menu-btn" aria-label="Toggle Menu" class="md:hidden text-neutral-300 hover:text-white p-1 rounded-full">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden max-w-4xl mx-auto mt-2 glass-card rounded-2xl px-6 py-4 space-y-3 text-sm font-semibold text-neutral-300 shadow-2xl">
+      <a href="#projects" class="block py-1.5 hover:text-white transition">Projects</a>
+      <a href="#experience" class="block py-1.5 hover:text-white transition">Experience</a>
+      <a href="#certificates" class="block py-1.5 hover:text-white transition">Certificates</a>
+      <a href="#about" class="block py-1.5 hover:text-white transition">About Me</a>
+      <a href="#contact" class="block py-1.5 text-white font-bold">Contact ↗</a>
+    </div>
+  </header>
+
+  <main>
+  <!-- ═══════════════════════════════════════════
+       HERO
+  ═══════════════════════════════════════════ -->
+  <section id="home" class="pt-36 pb-20 md:pt-44 md:pb-28 px-6 max-w-4xl mx-auto">
+
+    <!-- Location Pill -->
+    <div class="reveal active inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-pill text-xs text-neutral-400 mb-7">
+      <span class="text-neutral-500">📍</span>
+      Sidoarjo, Indonesia · Information Systems Student @ UNESA
+    </div>
+
+    <!-- Name + Role -->
+    <h1 class="reveal active font-display text-4xl sm:text-5xl md:text-[3.6rem] font-bold tracking-tight text-white leading-[1.1] mb-4">
+      Hi, I'm <span class="text-white underline underline-offset-4 decoration-white/20">Alifaqih</span> —
+    </h1>
+    <h2 class="reveal active font-display text-2xl sm:text-3xl md:text-4xl font-semibold text-neutral-400 mb-6 leading-tight">
+      I am a&nbsp;
+      <span id="slide-wrap" class="text-white relative">
+        <span class="slide-word active">Web Developer</span>
+        <span class="slide-word">Digital Designer</span>
+        <span class="slide-word">Video Editor</span>
+      </span>
+    </h2>
+
+    <!-- Bio (philosophy from about section) -->
+    <p class="reveal active text-neutral-400 text-base sm:text-lg leading-relaxed max-w-2xl mb-10">
+      I believe the best digital products are born from the synergy between structured system logic and clear visual communication.
+      As an <span class="text-white font-semibold">Information Systems student at UNESA</span>, I bridge
+      modern web development, data automation, and creative visual design — every element must serve a clear purpose,
+      maintain high readability, and deliver an intuitive user experience.
+    </p>
+
+    <!-- Action Buttons -->
+    <div class="reveal active flex flex-wrap items-center gap-3.5 mb-16">
+      <a href="#projects" class="px-6 py-3 rounded-full btn-white font-bold text-xs uppercase tracking-wider">
+        Explore My Work ↓
+      </a>
+      <a href="mailto:maaf.alifaqih@gmail.com" class="px-5 py-3 rounded-full glass-pill text-neutral-200 hover:text-white font-semibold text-xs uppercase tracking-wider flex items-center gap-2">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        Send Email
+      </a>
+      <button onclick="copyEmail()" class="px-4 py-3 rounded-full glass-pill text-neutral-400 hover:text-white text-xs font-medium flex items-center gap-1.5 transition">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+        Copy Email
+      </button>
+    </div>
+
+    <!-- Stats Strip -->
+    <div class="reveal active pt-7 border-t border-white/[0.07] flex flex-wrap items-center justify-between gap-5">
+      <div class="flex gap-8">
+        <div>
+          <div class="font-display text-2xl font-bold text-white">3+</div>
+          <div class="text-xs text-neutral-500 mt-0.5">Years Experience</div>
+        </div>
+        <div>
+          <div class="font-display text-2xl font-bold text-white">15+</div>
+          <div class="text-xs text-neutral-500 mt-0.5">Projects Done</div>
+        </div>
+        <div>
+          <div class="font-display text-2xl font-bold text-white">100%</div>
+          <div class="text-xs text-neutral-500 mt-0.5">Client Satisfaction</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-5 text-xs text-neutral-400">
+        <a href="https://www.instagram.com/ma.alfaey/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          Instagram
+        </a>
+        <a href="https://www.linkedin.com/in/muhammadalialfaqih" target="_blank" rel="noopener noreferrer" class="hover:text-white transition flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn ↗
+        </a>
+        <a href="#contact" class="hover:text-white transition">Contact ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       PROJECTS
+  ═══════════════════════════════════════════ -->
+  <section id="projects" class="py-20 px-6 max-w-4xl mx-auto border-t border-white/[0.07]">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 reveal gap-4">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest text-neutral-500 mb-1">Selected Portfolio</p>
+        <h2 class="font-display text-2xl sm:text-3xl font-bold text-white">Featured Works</h2>
+      </div>
+
+      <!-- Filter Pills -->
+      <div class="flex flex-wrap gap-1.5 p-1 rounded-full glass-card" id="filter-buttons">
+        <button data-filter="all" class="filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white text-black transition">All</button>
+        <button data-filter="tech" class="filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold text-neutral-400 hover:text-white transition">Web &amp; Data</button>
+        <button data-filter="creative" class="filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold text-neutral-400 hover:text-white transition">Creative</button>
+      </div>
+    </div>
+
+    <!-- Projects Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="projects-grid">
+
+      <!-- Project 1: SAFRAZE -->
+      <article data-category="tech" onclick="openModal('safraze')" class="project-card cursor-pointer group rounded-3xl glass-card overflow-hidden reveal delay-1">
+        <div class="aspect-[16/10] overflow-hidden relative border-b border-white/[0.07]">
+          <img src="1.png" onerror="this.src='1.jpg'" alt="SAFRAZE Alumni Portal" class="w-full h-full object-cover group-hover:scale-105 transition duration-700 ease-out" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+          <span class="absolute top-4 left-4 px-2.5 py-1 rounded-full glass-pill text-[11px] font-semibold text-neutral-200">Web App</span>
+        </div>
+        <div class="p-6 relative z-10">
+          <div class="flex items-center justify-between text-xs text-neutral-500 mb-2">
+            <span>FULL STACK • 2026</span>
+            <span class="px-2.5 py-0.5 rounded-full bg-white/[0.06] text-neutral-300 text-[11px]">Apps Script</span>
+          </div>
+          <h3 class="font-display text-xl font-bold text-white mb-2 group-hover:text-neutral-200 transition">SAFRAZE — Integrated Alumni Portal</h3>
+          <p class="text-sm text-neutral-400 leading-relaxed mb-4">Cloud-based alumni web portal featuring an interactive member directory, photo gallery, and document viewer integrated with Google Sheets.</p>
+          <div class="flex items-center gap-1.5 text-xs font-semibold text-white group-hover:gap-2.5 transition-all">
+            <span>View Case Study</span><span>↗</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 2: IS Statistical -->
+      <article data-category="tech" onclick="openModal('stats')" class="project-card cursor-pointer group rounded-3xl glass-card overflow-hidden reveal delay-2">
+        <div class="aspect-[16/10] overflow-hidden relative border-b border-white/[0.07]">
+          <img src="2.png" onerror="this.src='2.jpg'" alt="IS Statistical Analysis" class="w-full h-full object-cover group-hover:scale-105 transition duration-700 ease-out" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+          <span class="absolute top-4 left-4 px-2.5 py-1 rounded-full glass-pill text-[11px] font-semibold text-neutral-200">Data Analytics</span>
+        </div>
+        <div class="p-6 relative z-10">
+          <div class="flex items-center justify-between text-xs text-neutral-500 mb-2">
+            <span>DATA • 2026</span>
+            <span class="px-2.5 py-0.5 rounded-full bg-white/[0.06] text-neutral-300 text-[11px]">Python + SPSS</span>
+          </div>
+          <h3 class="font-display text-xl font-bold text-white mb-2 group-hover:text-neutral-200 transition">IS Hypothesis Testing &amp; Data Simulator</h3>
+          <p class="text-sm text-neutral-400 leading-relaxed mb-4">Automated synthetic dataset generation and rigorous statistical hypothesis testing for IS research case studies.</p>
+          <div class="flex items-center gap-1.5 text-xs font-semibold text-white group-hover:gap-2.5 transition-all">
+            <span>View Case Study</span><span>↗</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 3: MUBES -->
+      <article data-category="creative" onclick="openModal('mubes')" class="project-card cursor-pointer group rounded-3xl glass-card overflow-hidden reveal delay-1">
+        <div class="aspect-[16/10] overflow-hidden relative border-b border-white/[0.07]">
+          <img src="3.png" onerror="this.src='3.jpg'" alt="MUBES Visual Identity" class="w-full h-full object-cover group-hover:scale-105 transition duration-700 ease-out" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+          <span class="absolute top-4 left-4 px-2.5 py-1 rounded-full glass-pill text-[11px] font-semibold text-neutral-200">UI/UX &amp; Branding</span>
+        </div>
+        <div class="p-6 relative z-10">
+          <div class="flex items-center justify-between text-xs text-neutral-500 mb-2">
+            <span>MOTION &amp; EVENT • 2026</span>
+            <span class="px-2.5 py-0.5 rounded-full bg-white/[0.06] text-neutral-300 text-[11px]">Canva + CapCut</span>
+          </div>
+          <h3 class="font-display text-xl font-bold text-white mb-2 group-hover:text-neutral-200 transition">MUBES Alumni 2026 — Visual Branding &amp; Broadcast</h3>
+          <p class="text-sm text-neutral-400 leading-relaxed mb-4">Comprehensive event visual identity, main stage backdrop design, and live broadcast stream control for 50+ attendees.</p>
+          <div class="flex items-center gap-1.5 text-xs font-semibold text-white group-hover:gap-2.5 transition-all">
+            <span>View Case Study</span><span>↗</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 4: Social Media -->
+      <article data-category="creative" onclick="openModal('social')" class="project-card cursor-pointer group rounded-3xl glass-card overflow-hidden reveal delay-2">
+        <div class="aspect-[16/10] overflow-hidden relative border-b border-white/[0.07] bg-neutral-900 flex items-center justify-center">
+          <div class="text-center p-6 group-hover:scale-105 transition duration-500">
+            <div class="w-12 h-12 mx-auto mb-3 rounded-2xl bg-white/[0.06] border border-white/10 flex items-center justify-center text-white">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </div>
+            <p class="font-display font-bold text-white">Social Media System</p>
+            <p class="text-xs text-neutral-500 mt-1">Content &amp; Brand Growth</p>
+          </div>
+          <span class="absolute top-4 left-4 px-2.5 py-1 rounded-full glass-pill text-[11px] font-semibold text-neutral-200">Content Strategy</span>
+        </div>
+        <div class="p-6 relative z-10">
+          <div class="flex items-center justify-between text-xs text-neutral-500 mb-2">
+            <span>CONTENT • 2026</span>
+            <span class="px-2.5 py-0.5 rounded-full bg-white/[0.06] text-neutral-300 text-[11px]">Brand Growth</span>
+          </div>
+          <h3 class="font-display text-xl font-bold text-white mb-2 group-hover:text-neutral-200 transition">Social Media &amp; Brand Content System</h3>
+          <p class="text-sm text-neutral-400 leading-relaxed mb-4">Strategic content calendars, modular graphic assets, and dynamic short-form video production for community engagement.</p>
+          <div class="flex items-center gap-1.5 text-xs font-semibold text-white group-hover:gap-2.5 transition-all">
+            <span>View Case Study</span><span>↗</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       EXPERIENCE TIMELINE
+  ═══════════════════════════════════════════ -->
+  <section id="experience" class="py-20 px-6 max-w-4xl mx-auto border-t border-white/[0.07]">
+    <div class="reveal mb-12">
+      <p class="text-xs font-semibold uppercase tracking-widest text-neutral-500 mb-1">Career &amp; Organization</p>
+      <h2 class="font-display text-2xl sm:text-3xl font-bold text-white">Track Record &amp; Experience</h2>
+    </div>
+
+    <div class="space-y-5">
+
+      <!-- Exp 1 -->
+      <div class="tl-item p-6 rounded-3xl glass-card reveal delay-1">
+        <div class="flex gap-4">
+          <div class="tl-dot mt-1"></div>
+          <div class="flex-1">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
+              <h3 class="font-display text-base font-bold text-white">Social Media Administrator</h3>
+              <span class="text-xs text-neutral-500 glass-pill px-2.5 py-0.5 rounded-full self-start sm:self-auto">2026 — Present</span>
+            </div>
+            <p class="text-xs text-neutral-500 mb-2">Alumni Community · Remote</p>
+            <p class="text-sm text-neutral-400 leading-relaxed mb-3">Designed weekly content calendars, tracked daily content performance analytics, and managed interactive community communications and direct message inquiries professionally.</p>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2.5 py-1 rounded-full glass-pill text-xs text-neutral-300">Content Planning</span>
+              <span class="px-2.5 py-1 rounded-full glass-pill text-xs text-neutral-300">Social Media Analytics</span>
+              <span class="px-2.5 py-1 rounded-full glass-pill text-xs text-neutral-300">Community Management</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Exp 2 -->
+      <div class="tl-item p-6 rounded-3xl glass-card reveal delay-2">
+        <div class="flex gap-4">
+          <div class="tl-dot mt-1"></div>
+          <div class="flex-1">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
+              <h3 class="font-display text-base font-bold text-white">Broadcaster &amp; Graphic Designer</h3>
+              <span class="text-xs text-neutral-500 glass-pill px-2.5 py-0.5 rounded-full self-start sm:self-auto">August 2026</span>
+            </div>
+            <p class="text-xs text-neutral-500 mb-2">Alumni Grand Assembly (MUBES) · Hybrid</p>
+            <p class="text-sm text-neutral-400 leading-relaxed mb-3">Crafted the event's visual identity, main stage layout, and digital promotional assets that successfully attracted 50+ attendees, while operating the live broadcast visual control system.</p>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2.5 py-1 rounded-full glass-pill text-xs text-neutral-300">Visual Branding</span>
+              <span class="px-2.5 py-1 rounded-full glass-pill text-xs text-neutral-300">Live Streaming</span>
+              <span class="px-2.5 py-1 rounded-full glass-pill text-xs text-neutral-300">Canva</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Exp 3 -->
+      <div class="tl-item p-6 rounded-3xl glass-card reveal delay-3">
+        <div class="flex gap-4">
+          <div class="tl-dot mt-1"></div>
+          <div class="flex-1">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
+              <h3 class="font-display text-base font-bold text-white">Digital Media Strategist &amp; Event Visual Designer</h3>
+              <span class="text-xs text-neutral-500 glass-pill px-2.5 py-0.5 rounded-full self-start sm:self-auto">2023 — 2026</span>
+            </div>
+            <p class="text-xs text-neutral-500 mb-2">Student Council Organization · Bogor</p>
+            <p class="text-sm text-neutral-400 leading-relaxed mb-3">Produced 10+ promotional visual assets, developed content storyboards, and edited short-form videos using CapCut PC to boost audience awareness and maintain visual brand consistency.</p>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2.5 py-1 rounded-full glass-pill text-xs text-neutral-300">Canva</span>
+              <span class="px-2.5 py-1 rounded-full glass-pill text-xs text-neutral-300">CapCut PC</span>
+              <span class="px-2.5 py-1 rounded-full glass-pill text-xs text-neutral-300">Visual Layout</span>
+              <span class="px-2.5 py-1 rounded-full glass-pill text-xs text-neutral-300">Storyboarding</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CERTIFICATES
+  ═══════════════════════════════════════════ -->
+  <section id="certificates" class="py-20 px-6 max-w-4xl mx-auto border-t border-white/[0.07]">
+    <div class="reveal mb-12">
+      <p class="text-xs font-semibold uppercase tracking-widest text-neutral-500 mb-1">Awards &amp; Credentials</p>
+      <h2 class="font-display text-2xl sm:text-3xl font-bold text-white">Certificates &amp; Achievements</h2>
+      <p class="text-sm text-neutral-500 mt-2">A collection of professional credentials earned through specialized training and skill development programs.</p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- Cert 1 -->
+      <div class="p-5 rounded-3xl glass-card flex flex-col gap-4 reveal delay-1">
+        <div class="cert-embed-wrap">
+          <iframe src="master.encrypted.pdf" title="Certificate 1" loading="lazy"></iframe>
+        </div>
+        <div>
+          <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white/10 text-neutral-300 mb-2">PDF · CERTIFICATE</span>
+          <h3 class="font-display font-bold text-white text-sm mb-1">Professional Certificate 1</h3>
+          <p class="text-xs text-neutral-500 leading-relaxed">Professional competency certificate in information technology and information systems development.</p>
+        </div>
+        <a href="master.encrypted.pdf" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-between text-xs font-bold text-white hover:text-neutral-300 transition glass-pill rounded-full px-4 py-2">
+          <span>Open Full PDF</span><span>↗</span>
+        </a>
+      </div>
+
+      <!-- Cert 2 -->
+      <div class="p-5 rounded-3xl glass-card flex flex-col gap-4 reveal delay-2">
+        <div class="cert-embed-wrap">
+          <iframe src="master.encrypted (1).pdf" title="Certificate 2" loading="lazy"></iframe>
+        </div>
+        <div>
+          <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white/10 text-neutral-300 mb-2">PDF · CERTIFICATE</span>
+          <h3 class="font-display font-bold text-white text-sm mb-1">Professional Certificate 2</h3>
+          <p class="text-xs text-neutral-500 leading-relaxed">Professional competency certificate in web development and integrated information systems.</p>
+        </div>
+        <a href="master.encrypted (1).pdf" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-between text-xs font-bold text-white hover:text-neutral-300 transition glass-pill rounded-full px-4 py-2">
+          <span>Open Full PDF</span><span>↗</span>
+        </a>
+      </div>
+
+      <!-- Cert 3 -->
+      <div class="p-5 rounded-3xl glass-card flex flex-col gap-4 reveal delay-3">
+        <div class="cert-embed-wrap">
+          <iframe src="master.encrypted (2).pdf" title="Certificate 3" loading="lazy"></iframe>
+        </div>
+        <div>
+          <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white/10 text-neutral-300 mb-2">PDF · CERTIFICATE</span>
+          <h3 class="font-display font-bold text-white text-sm mb-1">Professional Certificate 3</h3>
+          <p class="text-xs text-neutral-500 leading-relaxed">Professional certificate in visual design and digital media content creation.</p>
+        </div>
+        <a href="master.encrypted (2).pdf" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-between text-xs font-bold text-white hover:text-neutral-300 transition glass-pill rounded-full px-4 py-2">
+          <span>Open Full PDF</span><span>↗</span>
+        </a>
+      </div>
+
+      <!-- Cert 4 -->
+      <div class="p-5 rounded-3xl glass-card flex flex-col gap-4 reveal delay-1">
+        <div class="cert-embed-wrap">
+          <iframe src="master.encrypted (3).pdf" title="Certificate 4" loading="lazy"></iframe>
+        </div>
+        <div>
+          <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white/10 text-neutral-300 mb-2">PDF · CERTIFICATE</span>
+          <h3 class="font-display font-bold text-white text-sm mb-1">Professional Certificate 4</h3>
+          <p class="text-xs text-neutral-500 leading-relaxed">Competency certificate in data analysis and statistical modeling for information systems research.</p>
+        </div>
+        <a href="master.encrypted (3).pdf" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-between text-xs font-bold text-white hover:text-neutral-300 transition glass-pill rounded-full px-4 py-2">
+          <span>Open Full PDF</span><span>↗</span>
+        </a>
+      </div>
+
+      <!-- Cert 5 -->
+      <div class="p-5 rounded-3xl glass-card flex flex-col gap-4 reveal delay-2">
+        <div class="cert-embed-wrap">
+          <iframe src="master.encrypted (4).pdf" title="Certificate 5" loading="lazy"></iframe>
+        </div>
+        <div>
+          <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white/10 text-neutral-300 mb-2">PDF · CERTIFICATE</span>
+          <h3 class="font-display font-bold text-white text-sm mb-1">Professional Certificate 5</h3>
+          <p class="text-xs text-neutral-500 leading-relaxed">Competency development certificate in information technology and digital project management.</p>
+        </div>
+        <a href="master.encrypted (4).pdf" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-between text-xs font-bold text-white hover:text-neutral-300 transition glass-pill rounded-full px-4 py-2">
+          <span>Open Full PDF</span><span>↗</span>
+        </a>
+      </div>
+
+      <!-- Cert 6: MySkill Data Visualization -->
+      <div class="p-5 rounded-3xl glass-card flex flex-col gap-4 reveal delay-3">
+        <div class="cert-embed-wrap">
+          <iframe src="Muhammad Ali Al Faqih - E-Certif SC Data Visualization with Looker Data Studio Myskill.pdf" title="MySkill - Data Visualization" loading="lazy"></iframe>
+        </div>
+        <div>
+          <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white/10 text-neutral-300 mb-2">MYSKILL · BOOTCAMP</span>
+          <h3 class="font-display font-bold text-white text-sm mb-1">Data Visualization with Looker Data Studio</h3>
+          <p class="text-xs text-neutral-500 leading-relaxed">MySkill Short Course — interactive data visualization using Google Looker Data Studio.</p>
+        </div>
+        <a href="Muhammad Ali Al Faqih - E-Certif SC Data Visualization with Looker Data Studio Myskill.pdf" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-between text-xs font-bold text-white hover:text-neutral-300 transition glass-pill rounded-full px-4 py-2">
+          <span>Open Full PDF</span><span>↗</span>
+        </a>
+      </div>
+
+      <!-- Cert 7: MySkill Digital Marketing -->
+      <div class="p-5 rounded-3xl glass-card flex flex-col gap-4 reveal delay-1 sm:col-span-2 lg:col-span-1">
+        <div class="cert-embed-wrap">
+          <iframe src="Muhammad Ali Al Faqih - E-Certif SC Digital Marketing November 2026.pdf" title="MySkill - Digital Marketing" loading="lazy"></iframe>
+        </div>
+        <div>
+          <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white/10 text-neutral-300 mb-2">MYSKILL · BOOTCAMP</span>
+          <h3 class="font-display font-bold text-white text-sm mb-1">Digital Marketing — November 2026</h3>
+          <p class="text-xs text-neutral-500 leading-relaxed">MySkill Short Course — digital marketing strategy, SEO, and professional social media management.</p>
+        </div>
+        <a href="Muhammad Ali Al Faqih - E-Certif SC Digital Marketing November 2026.pdf" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-between text-xs font-bold text-white hover:text-neutral-300 transition glass-pill rounded-full px-4 py-2">
+          <span>Open Full PDF</span><span>↗</span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       ABOUT
+  ═══════════════════════════════════════════ -->
+  <section id="about" class="py-20 px-6 max-w-4xl mx-auto border-t border-white/[0.07]">
+    <div class="reveal mb-8">
+      <p class="text-xs font-semibold uppercase tracking-widest text-neutral-500 mb-1">About Me</p>
+      <h2 class="font-display text-2xl sm:text-3xl font-bold text-white mb-6">
+        Bridging structured technology with compelling visuals.
+      </h2>
+      <div class="space-y-4 text-neutral-400 text-sm sm:text-base leading-relaxed">
+        <p>
+          I'm <strong class="text-white">Muhammad Ali Al Faqih</strong>, an Information Systems undergraduate at Universitas Negeri Surabaya (UNESA), Fakultas Teknik. I'm drawn to the intersection of systematic web engineering and modern visual aesthetics.
+        </p>
+        <p>
+          Beyond building web applications and data automation systems, I actively work on visual identity design, event stage concepts, and social media content production. I believe the best digital solutions are those that are both functionally efficient and visually compelling.
+        </p>
+        <p>
+          Current focus: exploring Information Systems architecture, cloud-based web applications (Google Apps Script &amp; Tailwind CSS), and statistical data modeling.
+        </p>
+      </div>
+    </div>
+
+    <!-- Key Facts Card -->
+    <div class="p-6 rounded-2xl glass-card reveal">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-sm">
+        <div>
+          <span class="text-xs text-neutral-500 block mb-1 uppercase tracking-wider">Education</span>
+          <strong class="text-white font-semibold">Information Systems (S1) — UNESA</strong>
+        </div>
+        <div>
+          <span class="text-xs text-neutral-500 block mb-1 uppercase tracking-wider">Location</span>
+          <strong class="text-white font-semibold">Sidoarjo, East Java (WIB)</strong>
+        </div>
+        <div>
+          <span class="text-xs text-neutral-500 block mb-1 uppercase tracking-wider">Core Stack</span>
+          <span class="text-neutral-300 text-xs">HTML5 · Tailwind · JS · Python · Canva · Apps Script</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CONTACT
+  ═══════════════════════════════════════════ -->
+  <footer id="contact" class="py-20 px-6 max-w-4xl mx-auto border-t border-white/[0.07]">
+    <div class="rounded-3xl glass-card p-8 sm:p-14 text-center reveal">
+      <p class="text-xs font-semibold uppercase tracking-widest text-neutral-500 mb-2">Let's Connect</p>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mb-3">Let's Work Together!</h2>
+      <p class="text-neutral-400 text-sm sm:text-base max-w-md mx-auto mb-9 leading-relaxed">
+        Have a new project, digital collaboration offer, or just want to have a conversation? The door is always open.
+      </p>
+
+      <div class="flex flex-wrap justify-center gap-3.5 mb-5">
+        <a href="mailto:maaf.alifaqih@gmail.com" class="px-6 py-3 rounded-full btn-white font-bold text-xs uppercase tracking-wider flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          Send Email
+        </a>
+        <button onclick="copyEmail()" class="px-5 py-3 rounded-full glass-pill text-white font-semibold text-xs uppercase tracking-wider flex items-center gap-2">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+          Copy Email
+        </button>
+      </div>
+
+      <!-- Social Circles -->
+      <div class="flex justify-center gap-4 mt-6">
+        <a href="https://www.instagram.com/ma.alfaey/" target="_blank" rel="noopener noreferrer" title="Instagram" class="w-11 h-11 rounded-full glass-pill flex items-center justify-center text-neutral-400 hover:text-white transition">
+          <svg class="w-4.5 h-4.5 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/muhammadalialfaqih" target="_blank" rel="noopener noreferrer" title="LinkedIn" class="w-11 h-11 rounded-full glass-pill flex items-center justify-center text-neutral-400 hover:text-white transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Footer Bar -->
+    <div class="mt-10 flex flex-col sm:flex-row items-center justify-between text-xs text-neutral-500 gap-3">
+      <p>© 2026 <strong class="text-neutral-400">Muhammad Ali Al Faqih</strong>. Crafted with passion, glassmorphism &amp; micro-interactions.</p>
+      <div class="flex items-center gap-5">
+        <a href="https://www.instagram.com/ma.alfaey/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition">Instagram</a>
+        <a href="https://www.linkedin.com/in/muhammadalialfaqih" target="_blank" rel="noopener noreferrer" class="hover:text-white transition">LinkedIn</a>
+        <a href="#home" class="hover:text-white transition">Back to Top ↑</a>
+      </div>
+    </div>
+  </footer>
+  </main>
+
+  <!-- ═══════════════════════════════════════════
+       CASE STUDY MODAL
+  ═══════════════════════════════════════════ -->
+  <div id="modal-overlay" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div id="modal-box" class="glass-card rounded-3xl max-w-xl w-full p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto">
+      <button onclick="closeModal()" aria-label="Close" class="absolute top-5 right-5 w-8 h-8 rounded-full glass-pill flex items-center justify-center text-neutral-400 hover:text-white transition text-sm">✕</button>
+      <span id="modal-tag" class="text-xs font-semibold uppercase tracking-widest text-neutral-500">CATEGORY</span>
+      <h3 id="modal-title" class="font-display text-2xl font-bold text-white mt-1 mb-5">Project Title</h3>
+      <div id="modal-media" class="hidden mb-5 rounded-2xl overflow-hidden border border-white/10 bg-black/40"></div>
+      <div class="space-y-4 text-sm text-neutral-300 leading-relaxed mb-6">
+        <div>
+          <h4 class="text-xs uppercase tracking-wider text-neutral-500 font-bold mb-1">The Challenge</h4>
+          <p id="modal-challenge"></p>
+        </div>
+        <div>
+          <h4 class="text-xs uppercase tracking-wider text-neutral-500 font-bold mb-1">The Solution</h4>
+          <p id="modal-solution"></p>
+        </div>
+        <div>
+          <h4 class="text-xs uppercase tracking-wider text-neutral-500 font-bold mb-2">Tech &amp; Tools</h4>
+          <div id="modal-tools" class="flex flex-wrap gap-1.5"></div>
+        </div>
+      </div>
+      <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+        <button onclick="closeModal()" class="px-4 py-2 rounded-full glass-pill text-xs font-semibold text-neutral-300 hover:text-white transition">Close</button>
+        <a href="#contact" onclick="closeModal()" class="px-4 py-2 rounded-full btn-white text-xs font-bold">Discuss Project ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 glass-card rounded-full px-5 py-2.5 flex items-center gap-2.5 border border-white/20 shadow-2xl">
+    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+    <span id="toast-text" class="text-xs font-semibold text-white">Email copied!</span>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       JAVASCRIPT
+  ═══════════════════════════════════════════ -->
+  <script>
+    // ── Custom Cursor ──
+    const dot = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+    document.addEventListener('mousemove', e => {
+      mouseX = e.clientX; mouseY = e.clientY;
+      dot.style.left = mouseX + 'px';
+      dot.style.top = mouseY + 'px';
+    });
+    function animateRing() {
+      ringX += (mouseX - ringX) * 0.14;
+      ringY += (mouseY - ringY) * 0.14;
+      ring.style.left = ringX + 'px';
+      ring.style.top = ringY + 'px';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    // ── Scroll Progress ──
+    window.addEventListener('scroll', () => {
+      const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+      document.getElementById('scroll-bar').style.width = pct + '%';
+    });
+
+    // ── Scroll Reveal ──
+    const revealObs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+    // ── Liquid Glass Ripple on Click ──
+    document.querySelectorAll('.glass-card').forEach(card => {
+      card.addEventListener('click', function(e) {
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        this.style.setProperty('--ripple-x', (e.clientX - rect.left) + 'px');
+        this.style.setProperty('--ripple-y', (e.clientY - rect.top) + 'px');
+        this.style.setProperty('--ripple-size', size + 'px');
+        // Create ripple element
+        const ripple = document.createElement('span');
+        ripple.style.cssText = `
+          position:absolute;
+          border-radius:50%;
+          background:rgba(255,255,255,0.1);
+          width:${size}px; height:${size}px;
+          left:${e.clientX - rect.left - size/2}px;
+          top:${e.clientY - rect.top - size/2}px;
+          transform:scale(0);
+          animation:liquidRipple 0.7s cubic-bezier(0.16,1,0.3,1) forwards;
+          pointer-events:none; z-index:10;
+        `;
+        this.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 700);
+      });
+    });
+
+    // ── Sliding Profession Words ──
+    const words = document.querySelectorAll('.slide-word');
+    let currentWord = 0;
+    setInterval(() => {
+      words[currentWord].classList.remove('active');
+      currentWord = (currentWord + 1) % words.length;
+      words[currentWord].classList.add('active');
+    }, 2800);
+
+    // ── Navbar Active State on Scroll ──
+    const sections = document.querySelectorAll('section[id], footer[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const scrollObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          navLinks.forEach(l => l.classList.remove('active'));
+          const active = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { threshold: 0.4 });
+    sections.forEach(s => scrollObs.observe(s));
+
+    // ── Mobile Menu ──
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.add('hidden')));
+
+    // ── Filter Projects ──
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.project-card');
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => { b.classList.remove('bg-white','text-black'); b.classList.add('text-neutral-400'); });
+        btn.classList.add('bg-white','text-black'); btn.classList.remove('text-neutral-400');
+        const f = btn.dataset.filter;
+        projectCards.forEach(c => {
+          const show = f === 'all' || c.dataset.category === f;
+          c.style.display = show ? 'block' : 'none';
+          if (show) setTimeout(() => c.classList.add('active'), 20);
+        });
+      });
+    });
+
+    // ── Project Modal Data ──
+    const projects = {
+      safraze: {
+        tag: 'WEB APPLICATION • 2026',
+        title: 'SAFRAZE — Integrated Alumni Portal Platform',
+        challenge: 'Alumni and community members needed a single unified portal to browse a member directory, access event documentation, and view photo galleries — without the overhead of a paid database.',
+        solution: 'Built a responsive web architecture leveraging Google Apps Script as a serverless backend connected directly to Google Sheets, complete with instant search filters, an embedded document viewer, and a custom CMS dashboard.',
+        tools: ['Google Apps Script','HTML5','Tailwind CSS','Google Sheets DB','JavaScript'],
+      },
+      stats: {
+        tag: 'DATA ANALYTICS • 2026',
+        title: 'IS Hypothesis Testing & Data Simulator',
+        challenge: 'Processing and validating large-scale empirical Information Systems data for consistent, reproducible correlation and regression model testing.',
+        solution: 'Developed Python scripts for automated structured dataset generation, followed by validity testing, Cronbach\'s Alpha reliability, and full hypothesis testing in SPSS.',
+        tools: ['Python','SPSS 26','Pandas & NumPy','Statistical Modeling','Regression Analysis'],
+      },
+      mubes: {
+        tag: 'EVENT & MOTION • 2026',
+        title: 'MUBES Alumni 2026 — Visual Branding & Live Broadcast',
+        challenge: 'Delivering a cohesive, professional visual identity across digital promotional materials, printed stage backdrops, and live broadcast animations for a 50+ attendee event.',
+        solution: 'Designed a complete branding kit — event logo, stage typography, motion bumper countdown, modular presentation templates — and operated the live stream visual control system in real time.',
+        tools: ['Canva Pro','CapCut PC','Motion Graphics','Stage Backdrop','Stream Controller'],
+      },
+      social: {
+        tag: 'CONTENT STRATEGY • 2026',
+        title: 'Social Media & Brand Content System',
+        challenge: 'Building sustained audience engagement and maintaining brand aesthetic consistency within an efficient daily content publication cycle.',
+        solution: 'Crafted strategic editorial calendars, designed informative carousel grid systems, and produced dynamic short-form reels with high-retention pacing for organic growth.',
+        tools: ['Content Strategy','Canva','CapCut PC','Analytics','Brand Growth'],
+      },
+    };
+    const overlay = document.getElementById('modal-overlay');
+    function openModal(id) {
+      const d = projects[id]; if (!d) return;
+      document.getElementById('modal-tag').textContent = d.tag;
+      document.getElementById('modal-title').textContent = d.title;
+      document.getElementById('modal-challenge').textContent = d.challenge;
+      document.getElementById('modal-solution').textContent = d.solution;
+      const tc = document.getElementById('modal-tools');
+      tc.innerHTML = '';
+      d.tools.forEach(t => {
+        const s = document.createElement('span');
+        s.className = 'px-2.5 py-1 rounded-full glass-pill text-xs text-neutral-300';
+        s.textContent = t;
+        tc.appendChild(s);
+      });
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // ── Copy Email ──
+    function copyEmail() {
+      const em = 'maaf.alifaqih@gmail.com';
+      navigator.clipboard.writeText(em).then(() => showToast('Email copied: ' + em)).catch(() => showToast('Email: ' + em));
+    }
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      document.getElementById('toast-text').textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2800);
+    }
+  </script>
+</body>
+</html>
